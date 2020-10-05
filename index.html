@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta  name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="index.css">
+    <title>Music Player</title>
+  </head>
+
+  <body>
+    <center>
+      <div class="main shadow-lg">
+        <h5 id="title">Tera Ban Jaunga</h5>
+        <h6 id="artist" class="mb-3">Tulsi Kumar,Shahid K,Kiara_A</h6>
+          <div class="image_container">
+            <img src="images/kabir.jpg" alt="" class="shadow-lg">
+          </div>
+      <audio controls style="display:none;">
+        <source src="music/Tera_ban_jaunga.mp3" type="audio/ogg">
+      </audio>
+
+      <!--- progresss_bar-->
+      <div class="progress_bar" id="pro_bar">
+        <div class="progress_duration_meter">
+          <div id="current_time">0:00</div>
+          <div id="duration">0:00</div>
+        </div>
+          <div class="progress_div" id="progress_div">
+            <div class="progress" id="progress">
+            </div>
+          </div>
+      </div>
+
+      <div class="icons">
+        <span class="fa fa-backward" id="pre"></span>
+        <span class="fa fa-play"  id="play"></span>
+        <span class="fa fa-forward" id="next"></span>
+      </div>
+    </center>
+  </div>
+
+<script>
+const songs=[
+  {
+    name : "Tera_ban_jaunga",
+    title : "Tera Ban Jaunga",
+    artist: "Tulsi Kumar,Shahid K,Kiara_A",
+    img : "kabir",
+  },
+  {
+    name : "Ilahi",
+    title : "Ilahi",
+    artist: "Arjit Singh",
+    img : "ilahi",
+  },
+
+  {
+    name : "Lewis_Capaldi",
+    title : "Someone You Loved",
+    artist: "Lewis_Capaldi",
+    img : "lewis",
+  },
+  {
+    name : "Butterfly",
+    title : "Banke tusi butterfly",
+    artist: "Jass Manak",
+    img : "jass_manak",
+  },
+  {
+    name : "Khairiyat",
+    title : "Khairiyath Puchho",
+    artist: "Arjit Singh",
+    img : "khairiyat",
+  },
+  {
+    name : "Halsey_&_Khalid",
+    title : "Eastside",
+    artist: "Halsey & Khalid",
+    img : "eastside",
+  },
+  {
+    name : "Pachtaoge",
+    title : "Bada Pachtaoge",
+    artist: "Arjit Singh",
+    img : "arjit_singh",
+  },
+  {
+    name : "Diwane_hum",
+    title : "Diwane_hum_nahi_hote",
+    artist: "Unknown",
+    img : "diwane",
+  },
+  {
+  name : "Friends",
+  title : "Friends",
+  artist: "Anne Marie",
+  img : "anne_marrie1",
+},
+  {
+    name : "De_De_Pyaar",
+    title : "De_De_Pyaar",
+    artist: "Arman Malik",
+    img : "arman_malik",
+  },
+  {
+    name : "Let_me_love_you",
+    title : "Let Me Love You",
+    artist: "Justin Bieber",
+    img : "justin_bieber",
+  },
+  {
+    name : "Lost_Without_You",
+    title : "Lost_Without_You",
+    artist: "Ami Mishra",
+    img : "halfgirlfriend",
+  },
+  {
+    name : "Bad_girlfriend",
+    title : "Bad Girlfriend",
+    artist: "Anne Marie",
+    img : "anne_marrie2",
+  },
+  {
+    name : "Tum_hi_aana",
+    title : "Tum hi Aana",
+    artist: "Jubin Nautiyal",
+    img : "marjaavaan",
+  },
+  {
+    name : "Agar_tum_saath_ho",
+    title : "Agar tum saath ho",
+    artist: "Alka Yagnik, Arijit Singh",
+    img : "agar_tum_saath_ho",
+  },
+  {
+  name : "Seene_se_tere_sar_Ko",
+  title : "Seene se tere sar Ko",
+  artist: "Palak Muchhal",
+  img : "sarko",
+},
+];
+
+    const music = document.querySelector('audio');
+    const img = document.querySelector('img');
+    const play = document.getElementById('play');
+    const title = document.getElementById('title');
+    const artist = document.getElementById('artist');
+    const pre = document.getElementById('pre');
+    const next = document.getElementById('next');
+    const progress_div = document.getElementById('progress_div');
+
+    let progress = document.getElementById('progress');
+    let total_duration = document.getElementById('duration');
+    let current_Time = document.getElementById('current_time');
+
+    let isPlaying = false;
+    const playMusic = () => {
+      isPlaying=true;
+      music.play();
+      play.classList.replace('fa-play','fa-pause');
+      img.classList.add("image");
+    }
+
+  const pauseMusic = () =>{
+    isPlaying=false;
+    music.pause();
+    play.classList.replace('fa-pause','fa-play');
+    img.classList.remove("image");
+  }
+
+play.addEventListener("click",() =>{
+    if(isPlaying){
+      pauseMusic();
+    }else{
+      playMusic();
+    }
+});
+
+const loadSong = (songs) => {
+  title.textContent = songs.title;
+  artist.textContent = songs.artist;
+  music.src = "music/" + songs.name + ".mp3";
+  img.src = "images/" + songs.img + ".jpg";
+};
+  songsIndex = 0;
+ //loadSong(songs[1]);
+ const nextSong = () =>{
+   songsIndex = (songsIndex + 1) % songs.length;
+   loadSong(songs[songsIndex]);
+   playMusic();
+ };
+
+ const preSong = () =>{
+   songsIndex = (songsIndex - 1 + songs.length) % songs.length;
+   loadSong(songs[songsIndex]);
+   playMusic();
+ };
+
+ //progress js work
+ music.addEventListener('timeupdate',(event) =>{
+   const{currentTime,duration} = event.srcElement;
+   /*console.log(event);*/
+   let progress_time = (currentTime / duration) * 100;
+   progress.style.width = `${progress_time}%`;
+
+   //music duration
+   let min_duration = Math.floor(duration / 60 );
+   let sec_duration = Math.floor(duration % 60 );
+
+   if(sec_duration < 10){
+     sec_duration = `0${sec_duration}`;
+   }
+   let tot_duration = `${min_duration}:${sec_duration}`;
+
+   if(duration){
+   total_duration.textContent = `${tot_duration}`;
+ }
+
+ //current duration update
+ let min_currentTime = Math.floor(currentTime / 60 );
+ let sec_currentTime = Math.floor(currentTime % 60 );
+ if(sec_currentTime < 10){
+   sec_currentTime = `0${sec_currentTime}`;
+ }
+ let tot_currentTime = `${min_currentTime}:${sec_currentTime}`;
+ current_Time.textContent = `${tot_currentTime}`;
+ });
+
+  progress_div.addEventListener('click', (event) => {
+  const { duration } = music;
+  let move_progress = (event.offsetX / event.srcElement.clientWidth) * duration;
+  music.currentTime = move_progress;
+  });
+
+ music.addEventListener('ended',nextSong);
+ next.addEventListener('click',nextSong);
+ pre.addEventListener('click',preSong);
+
+</script>
+
+  </body>
+</html>
